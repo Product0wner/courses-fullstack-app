@@ -1,1 +1,1 @@
-# frontend-students
+# Courses-fullstack-app
