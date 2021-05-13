@@ -10,9 +10,10 @@ import withContext from './Context';
 
 import Header from './components/Header';
 import Courses from './components/Courses';
+import CourseDetail from './components/CourseDetail';
 
 const CoursesWithContext = withContext(Courses);
-
+const CourseDetailWithContext = withContext(CourseDetail);
 
 export default () => (
   <Router>
@@ -21,6 +22,8 @@ export default () => (
 
       <Switch>
         <Route exact path="/" component= {CoursesWithContext}/>
+        <Route path="/courses/:id" component={CourseDetailWithContext} />
+
       </Switch>
 
     </div>
