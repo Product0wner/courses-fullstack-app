@@ -11,9 +11,15 @@ import withContext from './Context';
 import Header from './components/Header';
 import Courses from './components/Courses';
 import CourseDetail from './components/CourseDetail';
+import UserSignIn from './components/UserSignIn';
+import UserSignUp from './components/UserSignUp';
+import CreateCourse from './components/CreateCourse';
+
 
 const CoursesWithContext = withContext(Courses);
 const CourseDetailWithContext = withContext(CourseDetail);
+
+const CreateCourseWithContext = withContext(CreateCourse);
 
 export default () => (
   <Router>
@@ -23,6 +29,9 @@ export default () => (
       <Switch>
         <Route exact path="/" component= {CoursesWithContext}/>
         <Route path="/courses/:id" component={CourseDetailWithContext} />
+        <Route path="/signin" component={UserSignIn} />
+        <Route path="/signup" component={UserSignUp} />
+        <Route path="/course/create" component={CreateCourse} />
 
       </Switch>
 
