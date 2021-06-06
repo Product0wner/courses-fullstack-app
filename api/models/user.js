@@ -68,11 +68,10 @@ module.exports = (sequelize) => {
 
     User.associate = (models) => {
         User.hasMany(models.Course, {
-          foreignKey: {
-            fieldName:'id',
-            allowNull: false,
-          },
-        });  
+          // userId created in the model associations with the foreignKey property, equals the id from the Users table
+          foreignKey: 'userId'
+          
+        });
       };
-    return User;
+      return User;
 };
