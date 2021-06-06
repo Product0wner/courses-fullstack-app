@@ -6,7 +6,7 @@ import Data from './Data';
 const Context = React.createContext(); 
 
 export class Provider extends Component {
-  //set initial state to value stored in Cookie OR null
+  //set the state to value in Cookies or NULL
   state = {
     authenticatedUser: Cookies.getJSON('authenticatedUser') || null
   };

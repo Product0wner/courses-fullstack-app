@@ -6,7 +6,7 @@ export default class Header extends React.PureComponent {
       return (
       <header>
         <div className="wrap header--flex">
-          <h1 className="header--logo"><a>Courses</a></h1>
+          <h1 className="header--logo"><a href="/">Courses</a></h1>
           <nav>
             <React.Fragment>
               <ul className="header--signedout">

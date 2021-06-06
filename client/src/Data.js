@@ -18,7 +18,7 @@ export default class Data {
     //check if endpoint(or route) requires user auth
     if(requiresAuth){
       //btoa creates base-64 encoded string from string of data
-      const encodedCredentials = btoa(`${credentials.emailAddress}:${credentials.password}`);
+      const encodedCredentials = btoa(`${credentials.emailAddress}:${credentials.pass}`);
 
       //set authorization header on each request that requires it by adding Authorization poperty to the headers object
       options.headers['Authorization'] = `Basic ${encodedCredentials}`;
@@ -124,8 +124,8 @@ export default class Data {
   }
 
   //DELETEs course
-  async deleteCourse(id, emailAddress, password){
-    const response = await this.api(`/courses/${id}`, 'DELETE', null, true, { emailAddress, password });
+  async deleteCourse(course, emailAddress, pass){
+    const response = await this.api(`/courses/${course.id}`, 'DELETE', null, true, { emailAddress, pass});
     if(response.status === 204) {
       return [];
     }

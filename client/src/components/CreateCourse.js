@@ -20,7 +20,7 @@ export default class CreateCourse extends Component {
     } = this.state;
 
     const { context } = this.props;
-    // const authUser = context.authenticatedUser;
+    const authUser = context.authenticatedUser;
 
     return (
       <div id="root">
@@ -50,7 +50,7 @@ export default class CreateCourse extends Component {
                                             placeholder="Course title..."
                                             value={title} />
                                     </div>
-                                    {/* <p>By {authUser.firstName} {authUser.lastName}</p> */}
+                                    <p>By {authUser.user.firstName} {authUser.user.lastName}</p>
                                 </div>
                                 <div className="course--description">
                                     <div>
@@ -110,12 +110,14 @@ export default class CreateCourse extends Component {
     // Send the course information to the API to create a course
     submit = () => {
         const { context } = this.props;
+        const authUser = context.authenticatedUser;
+        const userId = authUser.user.id;
 
         const {
             title,
             description,
             estimatedTime,
-            materialsNeeded,
+            materialsNeeded
         } = this.state;
 
 
@@ -124,12 +126,11 @@ export default class CreateCourse extends Component {
             description,
             estimatedTime,
             materialsNeeded,
+            userId
         };
 
-        const authUser = context.authenticatedUser;
-        const pass = context.unencryptedPassword;
             
-        context.data.createCourse(course, authUser.username, pass)
+        context.data.createCourse(course, authUser.user.emailAddress, authUser.password)
             .then( errors => {
                 if (errors.length) {
                     this.setState({ errors });
