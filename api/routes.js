@@ -12,9 +12,12 @@ function asyncHandler(cb) {
       try {
         await cb(req, res, next);
       } catch (error) {
-        // Forward error to the global error handler
-        next(error);
-      }
+        if (error.name === 'SequelizeUniqueConstraintError' || error.name === 'SequelizeValidationError'){
+          error.status = 400;
+          const errors = error.errors.map(err => err.message); 
+        }
+        next(error)
+      } 
     }
   }
 
@@ -22,7 +25,7 @@ function asyncHandler(cb) {
 router.get('/users', authenticateUser, asyncHandler(async (req, res) => {
   const user = await User.findByPk(req.currentUser, {
     attributes:{
-      exclude: ['password', 'createdAt', 'updatedAt']
+      exclude: ['createdAt', 'updatedAt']
     }  
   });
   res.json({user})
@@ -46,9 +49,13 @@ router.post('/users', asyncHandler(async (req, res) => {
 // Route that returns a list of courses.
 router.get('/courses', asyncHandler(async (req, res) => {
     const courses = await Course.findAll({
-      attributes:{
-        exclude: ['createdAt', 'updatedAt']
-      }  
+      attributes: ["id", "title", "description", "estimatedTime", "materialsNeeded", "userId"],
+      include: [
+        {
+          model: User,
+          attributes: ['id', 'firstName', 'lastName', 'emailAddress']
+        },
+      ],
     })
     res.json(courses);
 }));
@@ -56,9 +63,13 @@ router.get('/courses', asyncHandler(async (req, res) => {
 // Route that returns a course based on its id.
 router.get('/courses/:id', asyncHandler(async (req, res) => {
   const course = await Course.findByPk(req.params.id, {
-    attributes:{
-      exclude: ['createdAt', 'updatedAt']
-    }  
+    attributes: ["id", "title", "description", "estimatedTime", "materialsNeeded", "userId"],
+      include: [
+        {
+          model: User,
+          attributes: ['id', 'firstName', 'lastName', 'emailAddress']
+        },
+      ],
   })
 
   if(course) {

@@ -63,13 +63,14 @@ module.exports = (sequelize) => {
             }
         }
     }, { 
-        sequelize 
+        sequelize,
+        modelName: 'User',
     });
 
     User.associate = (models) => {
         User.hasMany(models.Course, {
-          // userId created in the model associations with the foreignKey property, equals the id from the Users table
-          foreignKey: 'userId'
+          foreignKey: 'userId',
+          allowNull: false
           
         });
       };
