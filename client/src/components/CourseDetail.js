@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
+import { Redirect } from 'react-router-dom';
+
 
 
 export default class CourseDetail extends Component {
@@ -27,8 +29,6 @@ export default class CourseDetail extends Component {
                     materialsNeeded: data.materialsNeeded,
                     id: data.id,
                     userId: data.userId,
-                    firstName: data.User,
-                    lastName: data.User
                 }) }
                 // redirect to notfound page if the requested course isn't returned from the REST API
                 else {
@@ -46,12 +46,12 @@ export default class CourseDetail extends Component {
             description,
             materialsNeeded,
             id,
-            userId,
-            firstName,
-            lastName
+            userId
             } = this.state;
         const { context } = this.props;
         const authUser = context.authenticatedUser;
+
+
 		return (
 			<main>
             <div className="actions--bar">
@@ -59,9 +59,9 @@ export default class CourseDetail extends Component {
                 {(authUser && authUser.user.id === userId
                 ) ? (
                     <React.Fragment>
-                    <Link className="button" to={`/courses/${id}/update`}>Update Course</Link>
-                    <Link className="button" onClick={this.deleteCourse} to="/">Delete Course</Link>
-                    <Link className="button button-secondary" to="/">Return to List</Link>
+                        <Link className="button button-secondary" to="/">Return to List</Link>
+                        <Link className="button" to={`/courses/${id}/update`}>Update Course</Link>
+                        <Link className="button" onClick={this.deleteCourse} to="/">Delete Course</Link>
                     </React.Fragment>
                 ) : (
                     <Link className="button button-secondary" to="/">Return to List</Link>
@@ -79,6 +79,7 @@ export default class CourseDetail extends Component {
                         <ReactMarkdown>
                         {description}
                         </ReactMarkdown>
+
                     </div>
                     <div>
                         <h3 className="course--detail--title">Estimated Time</h3>
@@ -100,13 +101,15 @@ export default class CourseDetail extends Component {
 	}
 	deleteCourse = () => {
 		const { context } = this.props;
+        const authUser = context.authenticatedUser;
+        const userId = authUser.user.id;
+
 		const {
 			title,
 			description,
 			estimatedTime,
 			materialsNeeded,
-			id,
-			userId
+            id
 		} = this.state;
 
 		const course = {
@@ -114,11 +117,9 @@ export default class CourseDetail extends Component {
 			description,
 			estimatedTime,
 			materialsNeeded,
-			id,
+            id,
 			userId
 		};
-
-		const authUser = context.authenticatedUser;
 
 		context.data.deleteCourse(course, authUser.user.emailAddress, authUser.password)
 		.then(errors => {
@@ -126,14 +127,14 @@ export default class CourseDetail extends Component {
 				this.setState({ errors })
 			} else {
 				console.log(`course deleted`);
-				this.props.history.push("/");
+				this.props.history.go(0)
+                ;
 			}
 		})
     	.catch(err => {
-			//handle the rejected promise
 			console.log(err);
-			//redirect to error page by pushing to history stack
 			this.props.history.push('/error');
+            
     	});
 	}
 }

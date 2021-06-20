@@ -12,13 +12,13 @@ export default class Courses extends Component {
 		context.data.getCourses()
 		.then((courses) => {
 			this.setState({ courses });
-            console.log(courses);
 		})
 		.catch(err => console.log(err));
 	}    
 	render() {
 		const { courses } = this.state;
 		const courseList = courses.map((course) => {
+		console.log("This was my course");
 			return (
 				<Link className="course--module course--link" to={`/courses/${course.id}`} key={course.id}>
 				<h2 className="course--label">Course</h2>

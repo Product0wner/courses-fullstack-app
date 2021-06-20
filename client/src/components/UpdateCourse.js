@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Form from './Form';
 
+
 export default class UpdateCourse extends Component {
 	state = {
 		title: '',
@@ -14,6 +15,7 @@ export default class UpdateCourse extends Component {
   componentDidMount() {
     const { context } = this.props;
     const { match } = this.props;
+    const authUser = context.authenticatedUser;
 
     //store existing course information
     context.data.getCourse(match.params.id)
@@ -23,12 +25,8 @@ export default class UpdateCourse extends Component {
         description: course.description, 
         estimatedTime: course.estimatedTime, 
         materialsNeeded: course.materialsNeeded,
-        userInfo: course.User
+        userInfo: course.User,
       });
-      //check if owner of course matches signed in user
-      // if(course.userId !== authUser.id){
-      //   this.props.history.push('/forbidden');
-      // }
     })
 		.catch(err => {
 			this.props.history.push('/notfound');
@@ -45,6 +43,7 @@ export default class UpdateCourse extends Component {
       userInfo,
       errors
     } = this.state;
+
 
     return(
       <div className="wrap">
@@ -66,7 +65,7 @@ export default class UpdateCourse extends Component {
                       value={title} 
                       onChange={this.change} />
                   </label>
-                  {/* <p>By {userInfo.firstName} {userInfo.lastName}</p> */}
+                  <p>By </p>
                   <label>Course Description
                     <textarea 
                       id="description" 
@@ -113,13 +112,15 @@ export default class UpdateCourse extends Component {
 
   submit = () => {
     const { context } = this.props;
+    const authUser = context.authenticatedUser;
     const { match } = this.props;
 
     const { 
       title, 
       description, 
       estimatedTime, 
-      materialsNeeded
+      materialsNeeded,
+      id
     } = this.state;
 
     //updated course info object using shorthand syntax
@@ -128,10 +129,14 @@ export default class UpdateCourse extends Component {
       description,
       estimatedTime,
       materialsNeeded,
+      id
     };
 
     //update course
-    context.data.updateCourse(course, match.params.id)
+    console.log(match.params.id);
+    console.log(authUser.user.emailAddress);
+    console.log(authUser.password);
+    context.data.updateCourse(course, match.params.id, authUser.user.emailAddress, authUser.password)
     .then(errors => {
       if(errors.length){
         this.setState({ errors });

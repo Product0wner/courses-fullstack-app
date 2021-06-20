@@ -55,11 +55,10 @@ export default class UserSignIn extends Component {
     );
   }
 
-  // Update user attributes stored in state upon changes in the UI input fields
+  // Update user attributes stored in state
   change = (event) => {
     const name = event.target.name;
     const value = event.target.value;
-    console.log("hello")
 
     this.setState(() => {
       return {
@@ -71,10 +70,8 @@ export default class UserSignIn extends Component {
   // Sign in user with attributes stored in state
   submit = () => {
     const { context } = this.props;
-    console.log(this.props)
     const { from } = this.props.location.state || { from: { pathname: '/' }};
     const { emailAddress, password } = this.state;
-
     context.actions.signIn(emailAddress, password)
     .then( user => {
         if (user === null) {
@@ -82,17 +79,27 @@ export default class UserSignIn extends Component {
             return {errors: [ 'Sign-in was unsuccessful' ]};
           })
         } 
+
         else {
           this.props.history.push(from);
           console.log(`SUCCESS ${emailAddress} is now signed in`);
         }
       })
+
     .catch( err => {
-        this.props.history.push('/error');
-      })
+      if (!emailAddress) {
+        this.setState(() => {
+          return {errors: [ 'You need to provide an email address' ]};
+        })
+      } else {
+        this.setState(() => {
+          return {errors: [ 'Sign-in was unsuccessful' ]};
+        })
+      }
+    })
   }
 
-  // Cancel sign in and return to page with course listings
+  // Cancel sign in and return to index page
   cancel = () => {
     this.props.history.push('/');
   }

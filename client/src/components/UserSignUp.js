@@ -126,7 +126,6 @@ export default class UserSignUp extends Component {
     }
   }
 
-  // Cancel new creation and return to page containing list of courses
   cancel = () => {
     this.props.history.push('/');
   }

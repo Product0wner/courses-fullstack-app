@@ -129,7 +129,7 @@ export default class CreateCourse extends Component {
             userId
         };
 
-            
+         
         context.data.createCourse(course, authUser.user.emailAddress, authUser.password)
             .then( errors => {
                 if (errors.length) {
