@@ -77,9 +77,8 @@ export default class CourseDetail extends Component {
                         <h3 className="course--detail--title">Course</h3>
                         <h4 className="course--name">{title}</h4>
                         <ReactMarkdown>
-                        {description}
+                            {description}
                         </ReactMarkdown>
-
                     </div>
                     <div>
                         <h3 className="course--detail--title">Estimated Time</h3>

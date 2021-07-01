@@ -16,7 +16,7 @@ export default class Header extends React.PureComponent {
               {(authUser
                 ) ? (
                 <ul className="header--signedin">
-                  <li><NavLink to="/signout">Log out</NavLink></li>
+                  <li>{authUser.user.firstName}  <NavLink to="/signout">Log out</NavLink></li>
                 </ul>
               ) : (
                 <ul className="header--signedout">
